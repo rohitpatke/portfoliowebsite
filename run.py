@@ -1,4 +1,4 @@
-"""Development server: `python run.py`.
+"""Development server: `python3 run.py`.
 
 For production use gunicorn instead, for example:
     gunicorn "app:create_app('production')"
