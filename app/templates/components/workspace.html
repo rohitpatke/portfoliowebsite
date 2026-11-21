@@ -1,6 +1,4 @@
-{#- Workspace-collage primitives: avatar, multiplayer cursor and comment bubble.
-    `track` is "academic", "professional" or "neutral" and sets the accent colour. #}
-
+{#- `track` is "academic", "professional" or "neutral". #}
 {% macro avatar(initials, track="neutral") -%}
 <span class="avatar track--{{ track }}" aria-hidden="true">{{ initials }}</span>
 {%- endmacro %}
@@ -14,7 +12,6 @@
 </span>
 {%- endmacro %}
 
-{#- A comment bubble: avatar, "You · 2025" and one line of text. #}
 {% macro comment(text, initials, when, track="neutral", author="You") -%}
 <div class="comment track--{{ track }}">
   {{ avatar(initials, track) }}

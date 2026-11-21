@@ -6,8 +6,7 @@
   <title>{% block title %}{{ site.name }} · {{ site.tagline }}{% endblock %}</title>
   <meta name="description" content="{% block description %}{{ site.headline }}{% endblock %}">
   <meta name="color-scheme" content="light dark">
-  {#- Reveal styles only hide content under .js. If motion.js has not started within 3s
-      (blocked, offline, old browser), the class is removed so nothing stays hidden. #}
+  {#- Reveal styles hide content only under .js; drop it if motion.js hasn't started in 3s. #}
   <script>
     (function (root) {
       root.classList.add("js");

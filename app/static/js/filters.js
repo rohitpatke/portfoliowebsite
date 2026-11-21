@@ -1,8 +1,4 @@
-/**
- * Project filter pills on the homepage (All / Research / Professional).
- * Each pill has data-filter="all|academic|professional"; each card has data-type.
- * Pressed state is exposed with aria-pressed, and the result count is announced.
- */
+// Homepage filter pills: [data-filter] buttons show/hide cards by [data-type].
 
 const LABELS = { academic: "research", professional: "professional" };
 

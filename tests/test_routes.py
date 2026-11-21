@@ -11,11 +11,11 @@ from flask import Flask
 from flask.testing import FlaskClient
 
 from app import create_app
-from app.config import Config
+from app.config import CONTENT_DIR
 from app.services.chunking import project_to_chunks
 from app.services.content import ContentRepository
 
-PROJECTS = ContentRepository(Config.CONTENT_DIR).all()
+PROJECTS = ContentRepository(CONTENT_DIR).all()
 
 
 @pytest.fixture()

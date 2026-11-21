@@ -1,5 +1,4 @@
-{#- Card macros. Import with context so `site` is available:
-    {% import "components/cards.html" as cards with context %} #}
+{#- Import with context so `site` is available. #}
 {% from "components/workspace.html" import comment %}
 
 {% macro link_icon(label) -%}
@@ -12,7 +11,7 @@
 ti-{{ icons.get(label | lower, "link") }}
 {%- endmacro %}
 
-{#- Row of link chips (PDF, Code, ...). `context` names the project for screen readers. #}
+{#- `context` names the project for screen readers. #}
 {% macro link_row(links, context="") -%}
 {% if links %}
 <ul class="link-row" role="list">
@@ -28,7 +27,6 @@ ti-{{ icons.get(label | lower, "link") }}
 {% endif %}
 {%- endmacro %}
 
-{#- Author list with the site owner's name underlined. #}
 {% macro authors(names) -%}
 <p class="authors">
   {%- for name in names -%}
@@ -44,7 +42,7 @@ ti-{{ icons.get(label | lower, "link") }}
 </ul>
 {%- endmacro %}
 
-{#- Metric tile; use inside <dl class="metrics">. #}
+{#- Use inside <dl class="metrics">. #}
 {% macro metric_tile(outcome) -%}
 <div class="metric">
   <dt class="metric__label">{{ outcome.metric }}</dt>
@@ -52,8 +50,6 @@ ti-{{ icons.get(label | lower, "link") }}
 </div>
 {%- endmacro %}
 
-{#- Project card. Academic: serif title, venue, authors, links.
-    Professional: role and team, two metric tiles. Both show the decision bubble. #}
 {% macro project_card(project, level=3, delay=0) -%}
 {%- set url = url_for("projects.detail", kind=project.type, slug=project.slug) -%}
 <article class="card card--interactive project-card project-card--{{ project.type }} track--{{ project.type }}"
@@ -89,7 +85,6 @@ ti-{{ icons.get(label | lower, "link") }}
 </article>
 {%- endmacro %}
 
-{#- One entry in the research band's publication list. #}
 {% macro publication(project) -%}
 <li class="publication track--academic">
   <p class="publication__year">{{ project.year }}</p>
@@ -104,8 +99,7 @@ ti-{{ icons.get(label | lower, "link") }}
 </li>
 {%- endmacro %}
 
-{#- Decision card on detail pages. Its id equals the decision id, which is also the
-    anchor of the matching chunk in services/chunking.py. #}
+{#- The id is also the chunk anchor (services/chunking.py). #}
 {% macro decision_card(decision, number) -%}
 <article class="card decision" id="{{ decision.id }}" data-animate>
   <header class="decision__header">

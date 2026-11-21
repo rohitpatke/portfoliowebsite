@@ -1,18 +1,14 @@
-"""Pydantic models for project content.
-
-A file that does not match these models raises ``ValidationError`` while the app starts,
-so broken content never reaches a visitor.
-"""
+"""Pydantic models for project content, validated at startup."""
 
 from __future__ import annotations
 
 import re
-from typing import Annotated, Literal
+from typing import Annotated, Literal, get_args
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 ProjectType = Literal["academic", "professional"]
-PROJECT_TYPES: tuple[ProjectType, ...] = ("academic", "professional")
+PROJECT_TYPES: tuple[ProjectType, ...] = get_args(ProjectType)
 TYPE_LABELS: dict[str, str] = {"academic": "Research", "professional": "Professional"}
 
 EffectName = Literal["lottie", "gsap", "three"]
@@ -21,36 +17,29 @@ SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 TIMELINE_RE = re.compile(r"^\d{4}-(0[1-9]|1[0-2]) to \d{4}-(0[1-9]|1[0-2])$")
 LINK_PREFIXES = ("https://", "http://", "mailto:")
 
-# Element ids used by the detail-page sections. Chunk anchors (services/chunking.py) reuse
-# them, so a decision id may not take one of these names.
+# Detail-page section ids, also used as chunk anchors; decision ids may not reuse them.
 SECTION_ANCHORS = frozenset({"main", "summary", "problem", "decisions", "outcomes", "details"})
 
-# Fields filled in by ContentRepository; writing them in frontmatter is an error.
+# Set by ContentRepository, never in frontmatter.
 COMPUTED_FIELDS = frozenset({"slug", "type", "body_html"})
 
 Text = Annotated[str, Field(min_length=1)]
 
 
 class ContentModel(BaseModel):
-    """Base for content models: unknown keys are errors, strings are trimmed, values are immutable.
-
-    ``coerce_numbers_to_str`` lets YAML like ``value: 87.1`` fill a text field.
-    """
-
+    # coerce_numbers_to_str lets YAML like `value: 87.1` fill a text field.
     model_config = ConfigDict(
         extra="forbid", str_strip_whitespace=True, frozen=True, coerce_numbers_to_str=True
     )
 
 
 class Decision(ContentModel):
-    """A choice made during a project, with the alternatives considered."""
-
     id: str
     question: Text
     options: list[Text] = Field(min_length=2)
     chose: Text
     why: Text
-    bubble: Text | None = None  # one-line version shown as a comment bubble on cards
+    bubble: Text | None = None
 
     @field_validator("id")
     @classmethod
@@ -69,19 +58,15 @@ class Decision(ContentModel):
 
 
 class Outcome(ContentModel):
-    """A measurable result, rendered as a metric tile."""
-
     metric: Text
     value: Text
 
 
 class Project(ContentModel):
-    """One project file: frontmatter fields plus values computed from the file itself."""
-
     title: Text
     summary: Text
     problem: Text
-    timeline: str  # "YYYY-MM to YYYY-MM"
+    timeline: str
     skills: list[Text] = Field(min_length=1)
     role: Text | None = None
     team: Text | None = None
@@ -95,9 +80,9 @@ class Project(ContentModel):
     order: int = 100
     hero_effect: EffectName | None = None
 
-    slug: str  # filename without .md
-    type: ProjectType  # folder name
-    body_html: str = ""  # rendered Markdown body
+    slug: str
+    type: ProjectType
+    body_html: str = ""
 
     @field_validator("slug")
     @classmethod
@@ -143,20 +128,16 @@ class Project(ContentModel):
 
     @property
     def year(self) -> str:
-        """Start year, e.g. '2024'."""
         return self.timeline[:4]
 
     @property
     def ends(self) -> str:
-        """End month as 'YYYY-MM' (sorts correctly as a string)."""
         return self.timeline.split(" to ")[1]
 
     @property
     def bubble(self) -> Decision | None:
-        """First decision that has a bubble, shown as a comment on cards."""
         return next((decision for decision in self.decisions if decision.bubble), None)
 
     @property
     def type_label(self) -> str:
-        """Human label for the track: 'Research' or 'Professional'."""
         return TYPE_LABELS[self.type]
