@@ -1,7 +1,4 @@
-"""FUTURE STUBS: JSON endpoints for the AI features. Both return 501 until implemented.
-
-See README.md, "Roadmap: AI features", for the implementation steps and guardrails.
-"""
+"""FUTURE STUBS: both endpoints return 501 until implemented."""
 
 from __future__ import annotations
 
@@ -18,11 +15,9 @@ def _not_implemented(feature: str, flag: str) -> tuple[Response, int]:
 
 @bp.post("/chat")
 def chat() -> tuple[Response, int]:
-    """Answer a question about the projects, citing chunk anchors. Not implemented yet."""
     return _not_implemented("chat", "ENABLE_CHAT")
 
 
 @bp.post("/jd-match")
 def jd_match() -> tuple[Response, int]:
-    """Rank projects against a pasted job description. Not implemented yet."""
     return _not_implemented("jd_match", "ENABLE_JD_MATCH")

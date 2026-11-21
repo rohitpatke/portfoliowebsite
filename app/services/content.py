@@ -1,8 +1,4 @@
-"""ContentRepository: the only code that reads files from ``content/``.
-
-Everything is loaded and validated once, when the app starts. Templates and routes get
-already-validated objects, never file paths.
-"""
+"""ContentRepository: the only code that reads ``content/``, once at startup."""
 
 from __future__ import annotations
 
@@ -26,16 +22,14 @@ SITE_REQUIRED_KEYS = (
 
 
 class ContentError(RuntimeError):
-    """A content file is missing or invalid. Raised at startup so the problem is obvious."""
+    """A content file is missing or invalid."""
 
 
 def render_markdown(text: str) -> str:
-    """Render a project body from Markdown to HTML."""
     return markdown.markdown(text, extensions=MARKDOWN_EXTENSIONS, output_format="html")
 
 
 def load_project(path: Path) -> Project:
-    """Parse and validate one project file. The folder name sets the project type."""
     try:
         post = frontmatter.load(path)
     except (yaml.YAMLError, UnicodeDecodeError) as error:
@@ -58,7 +52,6 @@ def load_project(path: Path) -> Project:
 
 
 def load_site(path: Path) -> dict[str, Any]:
-    """Load ``site.yaml`` and check that the keys the templates rely on are present."""
     if not path.is_file():
         raise ContentError(f"{path} not found")
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -74,8 +67,6 @@ def load_site(path: Path) -> dict[str, Any]:
 
 
 class ContentRepository:
-    """Read-only, in-memory access to site settings and projects."""
-
     def __init__(self, content_dir: Path) -> None:
         self.content_dir = content_dir
         self.site: dict[str, Any] = load_site(content_dir / "site.yaml")
@@ -96,23 +87,18 @@ class ContentRepository:
         return projects
 
     def all(self) -> list[Project]:
-        """Every project, sorted by ``order`` then newest first."""
         return list(self._projects)
 
     def by_type(self, kind: str) -> list[Project]:
-        """Projects of one type: 'academic' or 'professional'."""
         return [p for p in self._projects if p.type == kind]
 
     def featured(self) -> list[Project]:
-        """Projects with ``featured: true``, for the homepage grid."""
         return [p for p in self._projects if p.featured]
 
     def get(self, kind: str, slug: str) -> Project | None:
-        """One project by type and slug, or None."""
         return next((p for p in self._projects if p.type == kind and p.slug == slug), None)
 
     def skill_terms(self, skill: str) -> list[str]:
-        """Lowercase skill name plus its aliases from ``site.yaml``, without duplicates."""
         terms = [skill.lower(), *self._aliases.get(skill.lower(), [])]
         return list(dict.fromkeys(terms))
 
@@ -134,5 +120,4 @@ class ContentRepository:
 
 
 def get_content() -> ContentRepository:
-    """The repository created by ``create_app`` for the current app."""
     return current_app.extensions["content"]

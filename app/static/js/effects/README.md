@@ -51,4 +51,19 @@ Rules of thumb:
 - Resolve asset paths relative to the module (`new URL("../../lottie/x.json", import.meta.url)`)
   so the site works under a URL prefix, such as a GitHub Pages project site.
 
-A full Lottie example is in the main README, under "Adding animation".
+For a Lottie teaser: save the JSON as `static/lottie/<project-slug>.json`, create
+`effects/lottie.js` like the sketch below, then set `hero_effect: lottie` in the project's
+frontmatter.
+
+```js
+export default async function mount(element) {
+  const { default: lottie } = await import("https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/+esm");
+  const animation = lottie.loadAnimation({
+    container: element.querySelector(".teaser__canvas"),
+    renderer: "svg",
+    path: new URL(`../../lottie/${element.dataset.project}.json`, import.meta.url).href,
+  });
+  await new Promise((resolve) => animation.addEventListener("DOMLoaded", resolve));
+  element.querySelectorAll(".teaser__bar").forEach((bar) => bar.remove());
+}
+```

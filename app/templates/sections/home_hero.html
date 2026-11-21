@@ -1,5 +1,4 @@
-{#- Hero collage. The headline comes first in the DOM, and the decorative pieces after it
-    are placed by CSS grid (sections.css), so they never cover the headline. #}
+{#- Headline first in the DOM; CSS grid places the decorative pieces so they never cover it. #}
 {% from "components/workspace.html" import comment, cursor %}
 {% set hero = site.hero %}
 {% set phone_project = featured | selectattr("type", "equalto", "professional") | first %}

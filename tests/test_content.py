@@ -7,12 +7,11 @@ from pathlib import Path
 
 import pytest
 
-from app.config import Config
+from app.config import CONTENT_DIR
 from app.models import PROJECT_TYPES, Project
 from app.services.chunking import project_to_chunks
 from app.services.content import ContentError, ContentRepository, load_project
 
-CONTENT_DIR = Config.CONTENT_DIR
 PROJECT_FILES = sorted(path for kind in PROJECT_TYPES for path in (CONTENT_DIR / kind).glob("*.md"))
 
 

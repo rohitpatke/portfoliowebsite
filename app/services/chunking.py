@@ -1,8 +1,6 @@
-"""Split projects into citable chunks for the future chatbot and JD matcher.
+"""Split projects into citable chunks for the future AI features.
 
-Every chunk's ``anchor`` is an element id on the project's detail page, so an answer can
-link straight to its source, for example ``/professional/realtime-fraud-scoring/#feature-store``.
-tests/test_routes.py checks that every anchor really exists on the rendered page.
+Each ``anchor`` is an element id on the detail page, so answers can link to their source.
 """
 
 from __future__ import annotations
@@ -15,20 +13,16 @@ from ..models import Project
 
 @dataclass(frozen=True)
 class Chunk:
-    """One retrievable piece of a project."""
-
-    id: str  # "<type>/<slug>#<anchor>", unique across the site
+    id: str  # "<type>/<slug>#<anchor>"
     project_type: str
     project_slug: str
     project_title: str
     section: str  # summary | problem | decision | outcomes | details
-    anchor: str  # element id on the detail page
+    anchor: str
     text: str
 
 
 class _TextExtractor(HTMLParser):
-    """Collects the text content of an HTML fragment."""
-
     def __init__(self) -> None:
         super().__init__()
         self.parts: list[str] = []
@@ -38,20 +32,16 @@ class _TextExtractor(HTMLParser):
 
 
 def html_to_text(html: str) -> str:
-    """Strip tags from rendered Markdown, keeping readable spacing."""
     parser = _TextExtractor()
     parser.feed(html)
     return " ".join(" ".join(parser.parts).split())
 
 
 def chunk_id(project: Project, anchor: str) -> str:
-    """Stable id for a chunk; mirrors the detail-page URL fragment."""
     return f"{project.type}/{project.slug}#{anchor}"
 
 
 def project_to_chunks(project: Project) -> list[Chunk]:
-    """Turn one project into chunks: summary, problem, each decision, outcomes, body."""
-
     def make(section: str, anchor: str, text: str) -> Chunk:
         return Chunk(
             id=chunk_id(project, anchor),

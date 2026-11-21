@@ -1,18 +1,7 @@
-/**
- * Motion levels 2 and 3 (level 1 is CSS-only, in motion.css).
- *
- * Level 2, scroll reveal: adds `.is-visible` to `[data-animate]` elements as they enter
- *   the viewport. Templates stagger siblings with `style="--delay: N"`.
- * Level 3, effect loader: `[data-effect="lottie|gsap|three"]` lazily imports
- *   `./effects/<name>.js` when the element nears the viewport and calls its default export
- *   with the element. See effects/README.md.
- *
- * With prefers-reduced-motion: reduce, everything is shown at once and no effects load.
- */
+// Scroll reveal for [data-animate] and lazy loader for [data-effect] modules (effects/README.md).
 
 const root = document.documentElement;
-// Re-assert .js (the inline fallback in base.html may have removed it on a slow load)
-// and signal that the reveal script is running.
+// Re-add .js (base.html removes it if this script is slow) and mark the script as running.
 root.classList.add("js", "motion-ready");
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -46,12 +35,10 @@ async function mountEffect(element) {
   }
   element.dataset.effectState = "loading";
   try {
-    // Resolved relative to this file, so it works under any URL prefix.
     const module = await import(new URL(`./effects/${name}.js`, import.meta.url).href);
     await module.default(element);
     element.dataset.effectState = "ready";
   } catch (error) {
-    // The static fallback inside the element stays visible.
     element.dataset.effectState = "failed";
     console.warn(`[motion] Effect "${name}" could not be loaded`, error);
   }

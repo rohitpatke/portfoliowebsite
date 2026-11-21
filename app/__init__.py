@@ -1,5 +1,3 @@
-"""Application factory."""
-
 from __future__ import annotations
 
 import os
@@ -14,10 +12,7 @@ from .services.content import ContentRepository
 
 
 def create_app(env: str | None = None) -> Flask:
-    """Build the app for ``env`` (development, production or testing; default: $APP_ENV).
-
-    Content is loaded and validated here, so a malformed project file stops startup.
-    """
+    """Build the app for ``env`` (default: $APP_ENV). Malformed content stops startup."""
     load_dotenv()
     app = Flask(__name__)
     app.config.from_mapping(get_config(env or os.getenv("APP_ENV", "development")))

@@ -1,13 +1,5 @@
-/**
- * Recruiter mode: paste a job description, get the three most relevant projects.
- *
- * Today the matching is client-side keyword search over each project's skills and their
- * aliases (content/site.yaml → skill_aliases). The data comes from the
- * <script type="application/json" id="recruiter-data"> tag rendered by the homepage route.
- *
- * The job description is untrusted input: results are built with DOM methods and
- * textContent only, never innerHTML.
- */
+// Recruiter mode: keyword-match a pasted job description against project skills (#recruiter-data).
+// The input is untrusted, so results are built with textContent only, never innerHTML.
 
 const MIN_LENGTH = 20;
 const MAX_RESULTS = 3;
@@ -40,10 +32,7 @@ function mentions(text, term) {
   return new RegExp(`(^|[^a-z0-9])${escapeRegExp(term)}($|[^a-z0-9])`).test(text);
 }
 
-/**
- * Return up to three projects that match the job description, best first.
- * Shape: [{ title, type, label, url, evidence, matched: ["Python", ...] }]
- */
+// Returns [{ title, type, label, url, evidence, matched: [...] }], best first.
 export async function findMatches(text) {
   // ── Swap point: AI matcher ──────────────────────────────────────────────────
   // Once POST /api/jd-match is implemented (ENABLE_JD_MATCH=true), replace the keyword

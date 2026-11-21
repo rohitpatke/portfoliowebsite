@@ -1,9 +1,4 @@
-"""FUTURE PLACEHOLDERS: system prompts for the AI features.
-
-Project content is inserted where marked as chunks of the form
-``<chunk id="professional/slug#anchor">text</chunk>``, so answers can cite chunk ids, which
-map to links on the detail pages.
-"""
+"""FUTURE: system prompts. ``{chunks}`` takes ``<chunk id="type/slug#anchor">text</chunk>`` items."""
 
 CHAT_SYSTEM_PROMPT = """\
 You answer visitors' questions about {name}'s projects on their portfolio website.
