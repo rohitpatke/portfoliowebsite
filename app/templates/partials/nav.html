@@ -1,0 +1,17 @@
+{% set current_kind = request.view_args.get("kind") if request.view_args else none %}
+<header class="site-header">
+  <nav class="container nav" aria-label="Main">
+    <a class="nav__brand" href="{{ url_for('main.index') }}">{{ site.name }}</a>
+    <ul class="nav__links" role="list">
+      <li>
+        <a class="nav__link" href="{{ url_for('projects.list_projects', kind='academic') }}"
+           {%- if current_kind == "academic" %} aria-current="page"{% endif %}>Research</a>
+      </li>
+      <li>
+        <a class="nav__link" href="{{ url_for('projects.list_projects', kind='professional') }}"
+           {%- if current_kind == "professional" %} aria-current="page"{% endif %}>Work</a>
+      </li>
+    </ul>
+    <a class="button button--primary button--small nav__cta" href="{{ url_for('main.index') }}#contact">Let's talk</a>
+  </nav>
+</header>

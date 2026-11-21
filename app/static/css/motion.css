@@ -1,0 +1,133 @@
+/* Motion, in layers. Everything that moves is inside prefers-reduced-motion: no-preference,
+   so visitors who ask for less motion get a static, fully visible page.
+
+   Level 1 (this file, CSS only): hover lift, drifting hero pieces, cross-page view transitions.
+   Level 2 (motion.js): scroll reveal for [data-animate], staggered by --delay.
+   Level 3 (motion.js effect loader): [data-effect] lazily imports static/js/effects/<name>.js. */
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Cross-document view transitions between pages of this site (progressive enhancement). */
+  @view-transition {
+    navigation: auto;
+  }
+
+  .site-header {
+    view-transition-name: site-header;
+  }
+
+  /* Level 1: hover lift and colour transitions */
+  .card--interactive {
+    transition:
+      translate var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    .card--interactive:hover {
+      translate: 0 -3px;
+    }
+  }
+
+  .button,
+  .pill,
+  .link-chip,
+  .nav__link,
+  .decision__anchor {
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  /* Level 1: hero pieces fade in, then drift. `translate` is animated so the static
+     `rotate` tilt from sections.css is kept. */
+  .float {
+    animation:
+      float-in var(--duration-slow) var(--ease-out) both,
+      drift 9s var(--ease-in-out) infinite;
+    animation-delay:
+      calc(var(--delay, 0) * 120ms),
+      calc(var(--duration-slow) + var(--delay, 0) * 120ms);
+  }
+
+  .hero .cursor {
+    animation: wander 12s var(--ease-in-out) infinite;
+  }
+
+  .cursor--on-code {
+    animation-delay: -5s;
+  }
+
+  /* Level 2: scroll reveal. Content is hidden only when JS is running (.js on <html>);
+     motion.js adds .is-visible as elements enter the viewport. */
+  .js [data-animate]:not(.is-visible) {
+    opacity: 0;
+  }
+
+  .js [data-animate].is-visible {
+    animation: reveal var(--duration-slow) var(--ease-out) both;
+    animation-delay: calc(var(--delay, 0) * var(--stagger));
+  }
+}
+
+/* Never print half-revealed content. */
+@media print {
+  .js [data-animate] {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
+
+@keyframes float-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -8px;
+  }
+}
+
+@keyframes wander {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  30% {
+    translate: 12px -6px;
+  }
+
+  65% {
+    translate: -6px 5px;
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

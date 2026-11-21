@@ -1,0 +1,19 @@
+{#- FUTURE PLACEHOLDER: project chatbot. Rendered only when ENABLE_CHAT=true.
+    The form stays disabled until POST /api/chat is implemented (see README roadmap). #}
+{% if features.chat %}
+<aside class="chat-widget" aria-label="Project assistant">
+  <details class="chat-widget__panel">
+    <summary class="button button--primary chat-widget__toggle">
+      <i class="ti ti-message-circle" aria-hidden="true"></i>Ask about my work
+    </summary>
+    <div class="card chat-widget__body">
+      <p class="chat-widget__note">The project assistant is coming soon. It will answer only from this site's content and link to its sources.</p>
+      <form class="chat-widget__form" data-endpoint="{{ url_for('ai.chat') }}">
+        <label class="visually-hidden" for="chat-input">Your question</label>
+        <input class="input" id="chat-input" name="question" type="text" maxlength="500" placeholder="Why shadow mode?" disabled>
+        <button class="button" type="submit" disabled>Send</button>
+      </form>
+    </div>
+  </details>
+</aside>
+{% endif %}

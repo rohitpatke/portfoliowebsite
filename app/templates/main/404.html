@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from "components/workspace.html" import comment %}
+
+{% block title %}Page not found · {{ site.name }}{% endblock %}
+
+{% block content %}
+<section class="container container--narrow not-found">
+  <p class="eyebrow">404</p>
+  <h1 class="display page-title">This page isn't here.</h1>
+  {{ comment("Probably a renamed project. The homepage and the Research and Work pages list everything.", site.initials, "now") }}
+  <p><a class="button button--primary" href="{{ url_for('main.index') }}"><i class="ti ti-arrow-left" aria-hidden="true"></i>Back to the homepage</a></p>
+</section>
+{% endblock %}

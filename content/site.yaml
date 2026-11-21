@@ -1,0 +1,75 @@
+# PLACEHOLDER CONTENT: every value below is an example. Replace it with your own.
+# Tracks: use "academic", "professional", or "neutral" wherever a `track` is asked for.
+
+name: Your Name
+initials: YN
+tagline: Researcher & engineer
+headline: I turn open research questions into systems people can rely on.
+status: Open to ML engineering and research engineering roles from early 2027.
+email: you@example.com
+linkedin: https://www.linkedin.com/in/your-handle
+
+hero:
+  code_file: eval_pipeline.py
+  code_lines:
+    - "def evaluate(model, split):"
+    - "    preds = model.predict(split.x)"
+    - "    report = f1_by_label(split.y, preds)"
+    - "    assert report.macro > BASELINE"
+    - "    return report"
+  figure_caption: "Fig. 3: Macro-F1 as labelled data grows"
+  figure_bars: [28, 41, 57, 66, 74, 88] # bar heights in percent
+  comment:
+    year: 2024
+    text: Spent a month on error analysis before touching the model. Worth it.
+    track: academic
+  cursors: # the first sits on the figure card, the second on the code card
+    - label: Researcher
+      track: academic
+    - label: Engineer
+      track: professional
+  tools: [brand-python, flask, database, brand-docker, chart-dots, brand-github] # Tabler icon names
+
+services:
+  - icon: microscope
+    title: Research
+    text: Framing sharp questions, running careful experiments, and writing them up so others can build on them.
+    track: academic
+  - icon: code
+    title: Engineering
+    text: Taking models and data pipelines from notebook to production, with tests, monitoring and on-call in mind.
+    track: professional
+  - icon: messages
+    title: Translation
+    text: Turning findings into decisions through design docs, demos and reviews that help teams choose well.
+    track: neutral
+
+experience:
+  - year: 2025
+    text: Joined Example Payments as an ML engineer on the risk platform.
+  - year: 2024
+    text: Paper accepted at the Placeholder Workshop on Clinical NLP.
+  - year: 2023
+    text: Data engineering internship at Acme Analytics.
+  - year: 2022
+    text: Started an MSc in Computer Science at Placeholder University.
+
+organizations:
+  - Placeholder University
+  - Example Payments
+  - Acme Analytics
+  - Sample Health Lab
+
+# Alternate terms recruiters use for each skill. Keys must match a skill used in at least
+# one project (case-insensitive); tests/test_content.py enforces this.
+skill_aliases:
+  Python: [py, python3]
+  PyTorch: [torch]
+  NLP: [natural language processing, text mining, language models]
+  Machine Learning: [ml, machine-learning, predictive modeling, predictive modelling]
+  Statistics: [statistical analysis, stats, bayesian, hypothesis testing]
+  SQL: [postgres, postgresql, bigquery, snowflake]
+  Kubernetes: [k8s]
+  Kafka: [event streaming, streaming]
+  A/B Testing: [ab testing, a/b tests, experimentation, controlled experiments]
+  Airflow: [orchestration, workflow scheduling]

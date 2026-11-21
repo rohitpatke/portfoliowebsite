@@ -1,0 +1,24 @@
+<section class="section" id="experience" aria-labelledby="experience-title">
+  <div class="container">
+    <header class="section__header">
+      <p class="section__index" aria-hidden="true">04</p>
+      <h2 id="experience-title" class="section__title">Experience</h2>
+    </header>
+    <div class="experience__body">
+      <ol class="notifications" role="list">
+        {%- for item in site.experience %}
+        <li class="notification" data-animate style="--delay: {{ loop.index0 }}">
+          <span class="notification__icon" aria-hidden="true"><i class="ti ti-bell"></i></span>
+          <p class="notification__text">{{ item.text }}</p>
+          <time class="notification__time" datetime="{{ item.year }}">{{ item.year }}</time>
+        </li>
+        {%- endfor %}
+      </ol>
+      {% if site.organizations %}
+      <ul class="orgs" role="list" aria-label="Organizations">
+        {%- for org in site.organizations %}<li>{{ org }}</li>{% endfor -%}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+</section>

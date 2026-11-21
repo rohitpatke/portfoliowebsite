@@ -1,0 +1,26 @@
+{#- Workspace-collage primitives: avatar, multiplayer cursor and comment bubble.
+    `track` is "academic", "professional" or "neutral" and sets the accent colour. #}
+
+{% macro avatar(initials, track="neutral") -%}
+<span class="avatar track--{{ track }}" aria-hidden="true">{{ initials }}</span>
+{%- endmacro %}
+
+{% macro cursor(label, track="neutral", modifier="") -%}
+<span class="cursor track--{{ track }} {{ modifier }}" aria-hidden="true">
+  <svg class="cursor__arrow" viewBox="0 0 16 16" width="16" height="16" focusable="false">
+    <path d="M1.5 1.5 6.8 14.5 8.6 8.6 14.5 6.8Z"/>
+  </svg>
+  <span class="cursor__label">{{ label }}</span>
+</span>
+{%- endmacro %}
+
+{#- A comment bubble: avatar, "You · 2025" and one line of text. #}
+{% macro comment(text, initials, when, track="neutral", author="You") -%}
+<div class="comment track--{{ track }}">
+  {{ avatar(initials, track) }}
+  <div class="comment__body">
+    <p class="comment__meta"><span class="comment__author">{{ author }}</span> · {{ when }}</p>
+    <p class="comment__text">{{ text }}</p>
+  </div>
+</div>
+{%- endmacro %}

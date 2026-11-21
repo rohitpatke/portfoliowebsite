@@ -1,0 +1,37 @@
+{% from "components/workspace.html" import comment %}
+<section class="section contact" id="contact" aria-labelledby="contact-title">
+  <div class="container contact__grid">
+    <div class="contact__intro">
+      <p class="section__index" aria-hidden="true">05</p>
+      <h2 id="contact-title" class="section__title section__title--large">Have a hard problem? Let's talk.</h2>
+      {{ comment(site.status, site.initials, "now") }}
+      <div class="contact__actions">
+        <a class="button button--primary" href="mailto:{{ site.email }}"><i class="ti ti-mail" aria-hidden="true"></i>Email</a>
+        <a class="button" href="{{ site.linkedin }}"><i class="ti ti-brand-linkedin" aria-hidden="true"></i>LinkedIn</a>
+      </div>
+    </div>
+
+    <section class="card recruiter" aria-labelledby="recruiter-title" data-recruiter>
+      <h3 id="recruiter-title" class="recruiter__title">
+        <i class="ti ti-user-search" aria-hidden="true"></i>Recruiter mode
+      </h3>
+      <p class="recruiter__lead">Paste a job description to see which projects match it best.</p>
+      <form class="recruiter__form" data-recruiter-form novalidate
+            {%- if features.jd_match %} data-endpoint="{{ url_for('ai.jd_match') }}"{% endif %}>
+        <label class="field-label" for="jd-text">Job description</label>
+        <textarea class="input recruiter__input" id="jd-text" name="jd" rows="6" maxlength="8000"
+                  aria-describedby="jd-hint jd-error"
+                  placeholder="We're hiring an ML engineer to build real-time models with Python and SQL…"></textarea>
+        <p class="field-hint" id="jd-hint">At least 20 characters. Matching runs in your browser; nothing is sent anywhere.</p>
+        <p class="field-error" id="jd-error" aria-live="polite" data-recruiter-error></p>
+        <div class="recruiter__actions">
+          <button class="button button--primary" type="submit"><i class="ti ti-search" aria-hidden="true"></i>Find matching work</button>
+          <button class="button" type="button" data-recruiter-sample><i class="ti ti-clipboard-text" aria-hidden="true"></i>Try a sample</button>
+        </div>
+      </form>
+      <noscript><p class="field-hint">Recruiter mode needs JavaScript. You can browse Research and Work from the menu instead.</p></noscript>
+      <div class="recruiter__results" aria-live="polite" data-recruiter-results></div>
+      <script type="application/json" id="recruiter-data">{{ match_data | tojson }}</script>
+    </section>
+  </div>
+</section>

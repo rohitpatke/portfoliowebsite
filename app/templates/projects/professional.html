@@ -1,0 +1,68 @@
+{#- Case-study layout. Section ids (summary, problem, decisions, outcomes, details) and
+    decision ids are the chunk anchors from services/chunking.py. #}
+{% extends "base.html" %}
+{% import "components/cards.html" as cards with context %}
+
+{% block title %}{{ project.title }} · {{ site.name }}{% endblock %}
+{% block description %}{{ project.summary }}{% endblock %}
+
+{% block content %}
+<article class="case track--professional">
+  <header class="container case__hero"
+          {%- if project.hero_effect %} data-effect="{{ project.hero_effect }}" data-project="{{ project.slug }}"{% endif %}>
+    <a class="back-link" href="{{ url_for('projects.list_projects', kind='professional') }}"><i class="ti ti-arrow-left" aria-hidden="true"></i>All work</a>
+    <p class="eyebrow"><span class="track-dot" aria-hidden="true"></span>Case study{% if project.org %} · {{ project.org }}{% endif %}</p>
+    <h1 class="case__title">{{ project.title }}</h1>
+    <p class="lead case__summary" id="summary">{{ project.summary }}</p>
+    {%- set facts = [
+      ("Role", project.role),
+      ("Team", project.team),
+      ("Timeline", project.timeline | replace(" to ", " – ")),
+      ("Organization", project.org),
+    ] %}
+    <dl class="facts">
+      {%- for label, value in facts if value %}
+      <div class="fact"><dt>{{ label }}</dt><dd>{{ value }}</dd></div>
+      {%- endfor %}
+    </dl>
+    {{ cards.skill_list(project.skills) }}
+  </header>
+
+  <div class="container case__body">
+    <section class="case__section" id="problem" aria-labelledby="problem-title">
+      <h2 id="problem-title" class="case__heading">The problem</h2>
+      <p class="case__problem">{{ project.problem }}</p>
+    </section>
+
+    {% if project.decisions %}
+    <section class="case__section" id="decisions" aria-labelledby="decisions-title">
+      <h2 id="decisions-title" class="case__heading">Decisions</h2>
+      <div class="decisions decisions--grid">
+        {%- for decision in project.decisions %}
+        {{ cards.decision_card(decision, loop.index) }}
+        {%- endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% if project.outcomes %}
+    <section class="case__section" id="outcomes" aria-labelledby="outcomes-title">
+      <h2 id="outcomes-title" class="case__heading">Outcomes</h2>
+      <dl class="metrics metrics--large">
+        {%- for outcome in project.outcomes %}{{ cards.metric_tile(outcome) }}{% endfor -%}
+      </dl>
+    </section>
+    {% endif %}
+
+    {% if project.body_html %}
+    <section class="case__section prose" id="details" aria-label="Details">
+      {{ project.body_html | safe }}
+    </section>
+    {% endif %}
+
+    {% if project.links %}
+    <footer class="case__footer">{{ cards.link_row(project.links, project.title) }}</footer>
+    {% endif %}
+  </div>
+</article>
+{% endblock %}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site.name }} · {{ site.tagline }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ site.headline }}{% endblock %}">
+  <meta name="color-scheme" content="light dark">
+  {#- Reveal styles only hide content under .js. If motion.js has not started within 3s
+      (blocked, offline, old browser), the class is removed so nothing stays hidden. #}
+  <script>
+    (function (root) {
+      root.classList.add("js");
+      setTimeout(function () {
+        if (!root.classList.contains("motion-ready")) root.classList.remove("js");
+      }, 3000);
+    })(document.documentElement);
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.50.0/dist/tabler-icons.min.css">
+  {%- for sheet in ["tokens", "base", "components", "sections", "motion"] %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/' ~ sheet ~ '.css') }}">
+  {%- endfor %}
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  {% include "partials/nav.html" %}
+  <main id="main" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+  {% include "partials/footer.html" %}
+  {% include "partials/chat_widget.html" %}
+  <script type="module" src="{{ url_for('static', filename='js/motion.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

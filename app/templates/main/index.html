@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% include "sections/home_hero.html" %}
+  {% include "sections/home_services.html" %}
+  {% include "sections/home_projects.html" %}
+  {% include "sections/home_research_band.html" %}
+  {% include "sections/home_experience.html" %}
+  {% include "sections/home_contact.html" %}
+{% endblock %}
+
+{% block scripts %}
+  <script type="module" src="{{ url_for('static', filename='js/filters.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/recruiter.js') }}"></script>
+{% endblock %}

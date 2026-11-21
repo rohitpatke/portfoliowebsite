@@ -1,0 +1,130 @@
+{#- Card macros. Import with context so `site` is available:
+    {% import "components/cards.html" as cards with context %} #}
+{% from "components/workspace.html" import comment %}
+
+{% macro link_icon(label) -%}
+{%- set icons = {
+  "pdf": "file-type-pdf", "paper": "file-text", "preprint": "file-text",
+  "code": "brand-github", "github": "brand-github", "slides": "presentation",
+  "demo": "player-play", "video": "brand-youtube", "write-up": "file-text",
+  "blog": "file-text", "website": "world",
+} -%}
+ti-{{ icons.get(label | lower, "link") }}
+{%- endmacro %}
+
+{#- Row of link chips (PDF, Code, ...). `context` names the project for screen readers. #}
+{% macro link_row(links, context="") -%}
+{% if links %}
+<ul class="link-row" role="list">
+  {%- for label, url in links.items() %}
+  <li>
+    <a class="link-chip" href="{{ url }}">
+      <i class="ti {{ link_icon(label) }}" aria-hidden="true"></i>{{ label }}
+      {%- if context %}<span class="visually-hidden">: {{ context }}</span>{% endif %}
+    </a>
+  </li>
+  {%- endfor %}
+</ul>
+{% endif %}
+{%- endmacro %}
+
+{#- Author list with the site owner's name underlined. #}
+{% macro authors(names) -%}
+<p class="authors">
+  {%- for name in names -%}
+    {%- if name == site.name %}<span class="authors__me">{{ name }}</span>{% else %}{{ name }}{% endif -%}
+    {%- if not loop.last %}, {% endif -%}
+  {%- endfor -%}
+</p>
+{%- endmacro %}
+
+{% macro skill_list(skills) -%}
+<ul class="tags" role="list" aria-label="Skills">
+  {%- for skill in skills %}<li class="tag">{{ skill }}</li>{% endfor -%}
+</ul>
+{%- endmacro %}
+
+{#- Metric tile; use inside <dl class="metrics">. #}
+{% macro metric_tile(outcome) -%}
+<div class="metric">
+  <dt class="metric__label">{{ outcome.metric }}</dt>
+  <dd class="metric__value">{{ outcome.value }}</dd>
+</div>
+{%- endmacro %}
+
+{#- Project card. Academic: serif title, venue, authors, links.
+    Professional: role and team, two metric tiles. Both show the decision bubble. #}
+{% macro project_card(project, level=3, delay=0) -%}
+{%- set url = url_for("projects.detail", kind=project.type, slug=project.slug) -%}
+<article class="card card--interactive project-card project-card--{{ project.type }} track--{{ project.type }}"
+         data-type="{{ project.type }}" data-animate style="--delay: {{ delay }}">
+  <p class="project-card__eyebrow"><span class="track-dot" aria-hidden="true"></span>{{ project.type_label }} · {{ project.year }}</p>
+  <h{{ level }} class="project-card__title">
+    <a class="project-card__link" href="{{ url }}">{{ project.title }}</a>
+  </h{{ level }}>
+  {% if project.type == "academic" %}
+    {% if project.venue %}<p class="project-card__meta">{{ project.venue }}</p>{% endif %}
+    {% if project.authors %}{{ authors(project.authors) }}{% endif %}
+    <p class="project-card__summary">{{ project.summary }}</p>
+    {{ link_row(project.links, project.title) }}
+  {% else %}
+    {%- set meta = [project.role, project.team] | select | join(" · ") %}
+    {% if meta %}<p class="project-card__meta">{{ meta }}</p>{% endif %}
+    <p class="project-card__summary">{{ project.summary }}</p>
+    {% if project.outcomes %}
+    <dl class="metrics metrics--pair">
+      {%- for outcome in project.outcomes[:2] %}{{ metric_tile(outcome) }}{% endfor -%}
+    </dl>
+    {% endif %}
+  {% endif %}
+  {% if project.bubble %}{{ comment(project.bubble.bubble, site.initials, project.year, project.type) }}{% endif %}
+</article>
+{%- endmacro %}
+
+{% macro service_card(service, delay=0) -%}
+<article class="card service track--{{ service.track | default('neutral') }}" data-animate style="--delay: {{ delay }}">
+  <span class="service__icon" aria-hidden="true"><i class="ti ti-{{ service.icon }}"></i></span>
+  <h3 class="service__title">{{ service.title }}</h3>
+  <p class="service__text">{{ service.text }}</p>
+</article>
+{%- endmacro %}
+
+{#- One entry in the research band's publication list. #}
+{% macro publication(project) -%}
+<li class="publication track--academic">
+  <p class="publication__year">{{ project.year }}</p>
+  <div class="publication__body">
+    <h3 class="publication__title">
+      <a href="{{ url_for('projects.detail', kind=project.type, slug=project.slug) }}">{{ project.title }}</a>
+    </h3>
+    {% if project.authors %}{{ authors(project.authors) }}{% endif %}
+    {% if project.venue %}<p class="publication__venue">{{ project.venue }}</p>{% endif %}
+    {{ link_row(project.links, project.title) }}
+  </div>
+</li>
+{%- endmacro %}
+
+{#- Decision card on detail pages. Its id equals the decision id, which is also the
+    anchor of the matching chunk in services/chunking.py. #}
+{% macro decision_card(decision, number) -%}
+<article class="card decision" id="{{ decision.id }}" data-animate>
+  <header class="decision__header">
+    <p class="decision__number">Decision {{ number }}</p>
+    <h3 class="decision__question">{{ decision.question }}</h3>
+    <a class="decision__anchor" href="#{{ decision.id }}">
+      <i class="ti ti-hash" aria-hidden="true"></i><span class="visually-hidden">Link to decision {{ number }}</span>
+    </a>
+  </header>
+  <ul class="options" role="list" aria-label="Options considered">
+    {%- for option in decision.options %}
+    {%- set chosen = option == decision.chose %}
+    <li class="option{% if chosen %} option--chosen{% endif %}">
+      <i class="ti ti-{{ 'circle-check' if chosen else 'circle' }}" aria-hidden="true"></i>
+      <span>{{ option }}</span>
+      {%- if chosen %}<span class="option__tag">Chosen</span>{% endif %}
+    </li>
+    {%- endfor %}
+  </ul>
+  <p class="decision__why"><span class="decision__why-label">Why</span> {{ decision.why }}</p>
+</article>
+{%- endmacro %}

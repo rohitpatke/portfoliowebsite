@@ -1,0 +1,19 @@
+{% import "components/cards.html" as cards with context %}
+{% if publications %}
+<section class="band" id="research" aria-labelledby="research-title">
+  <div class="container">
+    <div class="band__inner inverse" data-animate>
+      <header class="band__header">
+        <p class="section__index" aria-hidden="true">03</p>
+        <h2 id="research-title" class="section__title">Research &amp; publications</h2>
+        <p class="band__lead">Papers, theses and the questions behind them.</p>
+      </header>
+      <ol class="publications" role="list">
+        {%- for project in publications %}
+        {{ cards.publication(project) }}
+        {%- endfor %}
+      </ol>
+    </div>
+  </div>
+</section>
+{% endif %}

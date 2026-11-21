@@ -1,0 +1,14 @@
+{% import "components/cards.html" as cards with context %}
+<section class="section" id="services" aria-labelledby="services-title">
+  <div class="container">
+    <header class="section__header">
+      <p class="section__index" aria-hidden="true">01</p>
+      <h2 id="services-title" class="section__title">What I do</h2>
+    </header>
+    <div class="services">
+      {%- for service in site.services %}
+      {{ cards.service_card(service, loop.index0) }}
+      {%- endfor %}
+    </div>
+  </div>
+</section>

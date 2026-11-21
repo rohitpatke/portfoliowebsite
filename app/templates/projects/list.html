@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% import "components/cards.html" as cards with context %}
+
+{% set heading = "Research" if kind == "academic" else "Work" %}
+
+{% block title %}{{ heading }} · {{ site.name }}{% endblock %}
+{% block description %}{{ heading }} projects by {{ site.name }}.{% endblock %}
+
+{% block content %}
+<header class="container page-header track--{{ kind }}">
+  <p class="eyebrow"><span class="track-dot" aria-hidden="true"></span>{{ "Academic projects" if kind == "academic" else "Professional projects" }}</p>
+  <h1 class="display page-title">{{ heading }}</h1>
+  <p class="lead">
+    {%- if kind == "academic" -%}
+      Papers, theses and research projects: the question, the method, and the choices that shaped the results.
+    {%- else -%}
+      Systems built with teams: the problem, the decisions along the way, and what changed because of them.
+    {%- endif -%}
+  </p>
+</header>
+<div class="container page-body">
+  {% if projects %}
+  <div class="project-grid">
+    {%- for project in projects %}
+    {{ cards.project_card(project, level=2, delay=loop.index0 % 2) }}
+    {%- endfor %}
+  </div>
+  {% else %}
+  <p class="empty">No projects here yet. Add a Markdown file to <code>content/{{ kind }}/</code>.</p>
+  {% endif %}
+</div>
+{% endblock %}

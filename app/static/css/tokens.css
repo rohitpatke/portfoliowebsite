@@ -1,0 +1,179 @@
+/* Design tokens. Every colour, size and timing used by the site is defined here.
+   Colour encodes track: violet = academic, teal = professional, gray = neutral.
+   Text colours meet WCAG AA (4.5:1) on every surface they are used on, in both themes. */
+
+:root {
+  color-scheme: light dark;
+
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.375rem;
+  --text-xl: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
+  --text-2xl: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+  --text-display: clamp(2.6rem, 1.4rem + 4.2vw, 4.75rem);
+
+  /* Space and layout */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --container: 80rem;
+  --container-narrow: 46rem;
+  --header-height: 4rem;
+
+  /* Shape: flat, hairline borders, two radii, no shadows or gradients */
+  --border-width: 1px;
+  --radius-sm: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  /* Motion (used only under prefers-reduced-motion: no-preference) */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+  --duration-fast: 160ms;
+  --duration: 320ms;
+  --duration-slow: 700ms;
+  --stagger: 90ms;
+
+  /* Light theme */
+  --color-bg: #ffffff;
+  --color-surface: #fafafa;
+  --color-surface-2: #f4f4f5;
+  --color-ink: #18181b;
+  --color-ink-hover: #3f3f46;
+  --color-ink-muted: #52525b;
+  --color-ink-subtle: #67676f;
+  --color-line: #e4e4e7;
+  --color-line-strong: #d4d4d8;
+  --color-focus: #18181b;
+  --color-danger: #b91c1c;
+  --color-on-track: #ffffff;
+
+  --color-academic: #6d28d9;
+  --color-academic-soft: #f5f3ff;
+  --color-academic-line: #ddd6fe;
+  --color-professional: #0f766e;
+  --color-professional-soft: #f0fdfa;
+  --color-professional-line: #b5efe4;
+  --color-neutral: #52525b;
+  --color-neutral-soft: #f4f4f5;
+  --color-neutral-line: #e4e4e7;
+
+  /* Inverse palette for the research band: dark on the light theme */
+  --inverse-bg: #18181b;
+  --inverse-surface: #222226;
+  --inverse-surface-2: #2a2a2f;
+  --inverse-ink: #fafafa;
+  --inverse-ink-hover: #d4d4d8;
+  --inverse-ink-muted: #b4b4bc;
+  --inverse-ink-subtle: #9a9aa3;
+  --inverse-line: #34343a;
+  --inverse-line-strong: #46464e;
+  --inverse-on-track: #18181b;
+  --inverse-academic: #b39dfc;
+  --inverse-academic-soft: #2a2140;
+  --inverse-academic-line: #4a3a7a;
+  --inverse-professional: #3dd9c4;
+  --inverse-professional-soft: #12302c;
+  --inverse-professional-line: #1f5a52;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0c0c0e;
+    --color-surface: #141417;
+    --color-surface-2: #1c1c20;
+    --color-ink: #f4f4f5;
+    --color-ink-hover: #d4d4d8;
+    --color-ink-muted: #a1a1aa;
+    --color-ink-subtle: #8e8e98;
+    --color-line: #27272a;
+    --color-line-strong: #3f3f46;
+    --color-focus: #f4f4f5;
+    --color-danger: #fca5a5;
+    --color-on-track: #0c0c0e;
+
+    --color-academic: #a78bfa;
+    --color-academic-soft: #1d1630;
+    --color-academic-line: #3b2d63;
+    --color-professional: #2dd4bf;
+    --color-professional-soft: #0b2421;
+    --color-professional-line: #164e47;
+    --color-neutral: #a1a1aa;
+    --color-neutral-soft: #1c1c20;
+    --color-neutral-line: #27272a;
+
+    /* Research band turns light on the dark theme */
+    --inverse-bg: #f4f4f5;
+    --inverse-surface: #ffffff;
+    --inverse-surface-2: #e9e9ec;
+    --inverse-ink: #18181b;
+    --inverse-ink-hover: #3f3f46;
+    --inverse-ink-muted: #52525b;
+    --inverse-ink-subtle: #62626a;
+    --inverse-line: #d9d9de;
+    --inverse-line-strong: #c4c4cb;
+    --inverse-on-track: #ffffff;
+    --inverse-academic: #6d28d9;
+    --inverse-academic-soft: #ede9fe;
+    --inverse-academic-line: #c4b5fd;
+    --inverse-professional: #0f766e;
+    --inverse-professional-soft: #ddf7f2;
+    --inverse-professional-line: #99e3d6;
+  }
+}
+
+/* Track modifiers. Components read --track, --track-soft and --track-line, so any element
+   inside .track--academic / .track--professional / .track--neutral picks up its colour. */
+.track--academic {
+  --track: var(--color-academic);
+  --track-soft: var(--color-academic-soft);
+  --track-line: var(--color-academic-line);
+}
+
+.track--professional {
+  --track: var(--color-professional);
+  --track-soft: var(--color-professional-soft);
+  --track-line: var(--color-professional-line);
+}
+
+.track--neutral {
+  --track: var(--color-neutral);
+  --track-soft: var(--color-neutral-soft);
+  --track-line: var(--color-neutral-line);
+}
+
+/* Inverse scope: re-point the base tokens so every component inside renders inverted. */
+.inverse {
+  --color-bg: var(--inverse-bg);
+  --color-surface: var(--inverse-surface);
+  --color-surface-2: var(--inverse-surface-2);
+  --color-ink: var(--inverse-ink);
+  --color-ink-hover: var(--inverse-ink-hover);
+  --color-ink-muted: var(--inverse-ink-muted);
+  --color-ink-subtle: var(--inverse-ink-subtle);
+  --color-line: var(--inverse-line);
+  --color-line-strong: var(--inverse-line-strong);
+  --color-focus: var(--inverse-ink);
+  --color-on-track: var(--inverse-on-track);
+  --color-academic: var(--inverse-academic);
+  --color-academic-soft: var(--inverse-academic-soft);
+  --color-academic-line: var(--inverse-academic-line);
+  --color-professional: var(--inverse-professional);
+  --color-professional-soft: var(--inverse-professional-soft);
+  --color-professional-line: var(--inverse-professional-line);
+  background: var(--color-bg);
+  color: var(--color-ink);
+}

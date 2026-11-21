@@ -1,0 +1,72 @@
+{#- Research-paper layout. Section ids (summary, problem, decisions, outcomes, details) and
+    decision ids are the chunk anchors from services/chunking.py. #}
+{% extends "base.html" %}
+{% import "components/cards.html" as cards with context %}
+
+{% block title %}{{ project.title }} · {{ site.name }}{% endblock %}
+{% block description %}{{ project.summary }}{% endblock %}
+
+{% block content %}
+<article class="paper track--academic">
+  <header class="container container--narrow paper__header">
+    <a class="back-link" href="{{ url_for('projects.list_projects', kind='academic') }}"><i class="ti ti-arrow-left" aria-hidden="true"></i>All research</a>
+    <p class="eyebrow"><span class="track-dot" aria-hidden="true"></span>{{ project.venue or project.type_label }}</p>
+    <h1 class="paper__title">{{ project.title }}</h1>
+    {% if project.authors %}{{ cards.authors(project.authors) }}{% endif %}
+    <p class="paper__meta">{{ project.timeline | replace(" to ", " – ") }}{% if project.role %} · {{ project.role }}{% endif %}</p>
+    {{ cards.link_row(project.links) }}
+  </header>
+
+  {% if project.outcomes or project.hero_effect %}
+  <div class="container">
+    <figure class="teaser" id="outcomes"
+            {%- if project.hero_effect %} data-effect="{{ project.hero_effect }}" data-project="{{ project.slug }}"{% endif %}>
+      <div class="teaser__canvas" aria-hidden="true">
+        {%- for bar in site.hero.figure_bars %}<span class="teaser__bar" style="--h: {{ bar }}%"></span>{% endfor -%}
+      </div>
+      {% if project.outcomes %}
+      <figcaption class="teaser__caption">
+        <span class="teaser__label">Key results</span>
+        <dl class="metrics">
+          {%- for outcome in project.outcomes %}{{ cards.metric_tile(outcome) }}{% endfor -%}
+        </dl>
+      </figcaption>
+      {% endif %}
+    </figure>
+  </div>
+  {% endif %}
+
+  <div class="container container--narrow paper__body">
+    <section class="paper__section" id="summary" aria-labelledby="summary-title">
+      <h2 id="summary-title" class="paper__heading">Abstract</h2>
+      <p class="paper__abstract">{{ project.summary }}</p>
+    </section>
+
+    <section class="paper__section" id="problem" aria-labelledby="problem-title">
+      <h2 id="problem-title" class="paper__heading">Problem</h2>
+      <p>{{ project.problem }}</p>
+    </section>
+
+    {% if project.decisions %}
+    <section class="paper__section" id="decisions" aria-labelledby="decisions-title">
+      <h2 id="decisions-title" class="paper__heading">Key decisions</h2>
+      <div class="decisions">
+        {%- for decision in project.decisions %}
+        {{ cards.decision_card(decision, loop.index) }}
+        {%- endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% if project.body_html %}
+    <section class="paper__section prose" id="details" aria-label="Details">
+      {{ project.body_html | safe }}
+    </section>
+    {% endif %}
+
+    <footer class="paper__footer">
+      {{ cards.skill_list(project.skills) }}
+    </footer>
+  </div>
+</article>
+{% endblock %}

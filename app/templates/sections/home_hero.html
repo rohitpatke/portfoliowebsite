@@ -1,0 +1,62 @@
+{#- Hero collage. The headline comes first in the DOM, and the decorative pieces after it
+    are placed by CSS grid (sections.css), so they never cover the headline. #}
+{% from "components/workspace.html" import comment, cursor %}
+{% set hero = site.hero %}
+{% set phone_project = featured | selectattr("type", "equalto", "professional") | first %}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero__stage">
+    <div class="hero__copy">
+      <p class="hero__tagline">
+        <span class="track-dot track--academic" aria-hidden="true"></span>
+        <span class="track-dot track--professional" aria-hidden="true"></span>
+        {{ site.tagline }}
+      </p>
+      <h1 id="hero-title" class="display hero__title">{{ site.headline }}</h1>
+      {% if hero.tools %}
+      <ul class="hero__tools" role="list" aria-hidden="true">
+        {%- for tool in hero.tools %}<li class="tool"><i class="ti ti-{{ tool }}"></i></li>{% endfor -%}
+      </ul>
+      {% endif %}
+    </div>
+
+    <div class="float float--code" style="--delay: 1" aria-hidden="true">
+      <div class="code-card">
+        <div class="code-card__bar">
+          <span class="code-card__dots"><span></span><span></span><span></span></span>
+          <span class="code-card__file">{{ hero.code_file }}</span>
+        </div>
+        <pre class="code-card__body"><code>{% for line in hero.code_lines %}<span class="code-card__line">{{ line }}</span>{{ "\n" }}{% endfor %}</code></pre>
+      </div>
+      {% if hero.cursors | length > 1 %}{{ cursor(hero.cursors[1].label, hero.cursors[1].track, "cursor--on-code") }}{% endif %}
+    </div>
+
+    <figure class="float float--figure figure-card track--academic" style="--delay: 2">
+      <div class="figure-card__plot" aria-hidden="true">
+        {%- for bar in hero.figure_bars %}<span class="figure-card__bar" style="--h: {{ bar }}%"></span>{% endfor -%}
+      </div>
+      <figcaption class="figure-card__caption">{{ hero.figure_caption }}</figcaption>
+      {% if hero.cursors %}{{ cursor(hero.cursors[0].label, hero.cursors[0].track, "cursor--on-figure") }}{% endif %}
+    </figure>
+
+    <div class="float float--comment" style="--delay: 3">
+      {{ comment(hero.comment.text, site.initials, hero.comment.year, hero.comment.track) }}
+    </div>
+
+    <div class="float float--phone" style="--delay: 4" aria-hidden="true">
+      <div class="phone track--professional">
+        <div class="phone__status"><span>9:41</span><span class="phone__notch"></span><i class="ti ti-wifi"></i></div>
+        {% if phone_project %}
+        <p class="phone__label">{{ phone_project.org or phone_project.type_label }}</p>
+        <p class="phone__title">{{ phone_project.title }}</p>
+        {% for outcome in phone_project.outcomes[:2] %}
+        <div class="phone__metric">
+          <span class="phone__metric-value">{{ outcome.value }}</span>
+          <span class="phone__metric-label">{{ outcome.metric }}</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <span class="phone__home"></span>
+      </div>
+    </div>
+  </div>
+</section>
