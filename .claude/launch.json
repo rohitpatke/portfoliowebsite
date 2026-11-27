@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio",
+      "runtimeExecutable": ".venv/bin/python",
+      "runtimeArgs": ["run.py"],
+      "port": 5050,
+      "env": {"PORT": "5050", "FLASK_DEBUG": "1"}
+    }
+  ]
+}
