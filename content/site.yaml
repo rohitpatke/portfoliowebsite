@@ -1,75 +1,90 @@
-# PLACEHOLDER CONTENT: every value below is an example. Replace it with your own.
 # Tracks: use "academic", "professional", or "neutral" wherever a `track` is asked for.
 
-name: Your Name
-initials: YN
-tagline: Researcher & engineer
-headline: I turn open research questions into systems people can rely on.
-status: Open to ML engineering and research engineering roles from early 2027.
-email: you@example.com
-linkedin: https://www.linkedin.com/in/your-handle
+name: Rohit Patke
+initials: RP
+tagline: Energy engineer & researcher
+headline: I've spent my career at startups, helping them go from zero to one by building tools that didn't exist yet, turning messy work into repeatable processes, and scaling what works. Today I manage operations and turn what happens on site into data tools and models that drive better decisions.
+# TODO: confirm the roles you're targeting.
+status: Open to energy data, solutions engineering and product roles.
+email: darshanpatke@gmail.com
+linkedin: https://www.linkedin.com/in/rohitpatke
 
 hero:
-  code_file: eval_pipeline.py
+  code_file: tinyml_thermostat.py
   code_lines:
-    - "def evaluate(model, split):"
-    - "    preds = model.predict(split.x)"
-    - "    report = f1_by_label(split.y, preds)"
-    - "    assert report.macro > BASELINE"
-    - "    return report"
-  figure_caption: "Fig. 3: Macro-F1 as labelled data grows"
-  figure_bars: [28, 41, 57, 66, 74, 88] # bar heights in percent
+    - "def control_step(state, forecast):"
+    - "    setpoint = infer_setpoint(forecast)"
+    - "    temp = thermal_model(state, hvac=ON)"
+    - "    return ON if temp < setpoint - DB else OFF"
+    - "# 0.53 KB after int8 quantization"
+  figure_caption: "Fig. 4: Comfort by control strategy"
+  figure_bars: [10, 21, 58, 60, 94] # no HVAC, schedule, reactive, dataset policy, ML-predictive
   comment:
-    year: 2024
-    text: Spent a month on error analysis before touching the model. Worth it.
+    year: 2026
+    text: Every model was accurate enough. The control strategy is what moved comfort from 58% to 94%.
     track: academic
   cursors: # the first sits on the figure card, the second on the code card
     - label: Researcher
       track: academic
     - label: Engineer
       track: professional
-  tools: [brand-python, flask, database, brand-docker, chart-dots, brand-github] # Tabler icon names
+  tools: [brand-python, database, cpu, solar-panel, battery-charging, chart-dots] # Tabler icon names
 
 services:
   - icon: microscope
     title: Research
-    text: Framing sharp questions, running careful experiments, and writing them up so others can build on them.
+    text: Applied machine learning for energy, from on-device thermostat models to forecasting and battery optimization, written up so others can rerun it.
     track: academic
-  - icon: code
-    title: Engineering
-    text: Taking models and data pipelines from notebook to production, with tests, monitoring and on-call in mind.
+  - icon: bolt
+    title: Energy engineering
+    text: Building audits and certifications (LL87, LEED, WELL, ENERGY STAR), smart thermostat fleets and behind-the-meter battery rollouts across NYC.
     track: professional
-  - icon: messages
-    title: Translation
-    text: Turning findings into decisions through design docs, demos and reviews that help teams choose well.
+  - icon: database
+    title: Data & tooling
+    text: Python and Snowflake SQL that turn field problems into diagnostics, reconciliations and internal tools the team can reuse.
     track: neutral
 
 experience:
-  - year: 2025
-    text: Joined Example Payments as an ML engineer on the risk platform.
+  - year: 2026
+    text: Completed an Ed.D. in Computer Science at Judson University with a capstone on TinyML thermostats.
   - year: 2024
-    text: Paper accepted at the Placeholder Workshop on Clinical NLP.
-  - year: 2023
-    text: Data engineering internship at Acme Analytics.
+    text: Became co-lead of David Energy's NYC battery rollout and began building data and software tools.
   - year: 2022
-    text: Started an MSc in Computer Science at Placeholder University.
+    text: Took over smart thermostat operations for multi-site restaurant and fitness clients.
+  - year: 2021
+    text: Joined David Energy as an energy compliance and audit analyst on LL87, LEED, WELL and ENERGY STAR projects.
+  - year: 2020
+    text: Earned an MS in Energy Management at NYIT and audited 30+ NYC buildings at Carleton Energy Consulting.
+  - year: 2018
+    text: Completed a diploma in renewable energy at MIT Skills Pune and designed rooftop solar systems in Mumbai and Thane.
+  - year: 2017
+    text: Graduated in Electronics Engineering from the University of Mumbai.
 
 organizations:
-  - Placeholder University
-  - Example Payments
-  - Acme Analytics
-  - Sample Health Lab
+  - David Energy
+  - Judson University
+  - New York Institute of Technology
+  - Carleton Energy Consulting
+  - MIT Skills Pune
+  - University of Mumbai
 
 # Alternate terms recruiters use for each skill. Keys must match a skill used in at least
 # one project (case-insensitive); tests/test_content.py enforces this.
 skill_aliases:
   Python: [py, python3]
-  PyTorch: [torch]
-  NLP: [natural language processing, text mining, language models]
   Machine Learning: [ml, machine-learning, predictive modeling, predictive modelling]
-  Statistics: [statistical analysis, stats, bayesian, hypothesis testing]
-  SQL: [postgres, postgresql, bigquery, snowflake]
-  Kubernetes: [k8s]
-  Kafka: [event streaming, streaming]
-  A/B Testing: [ab testing, a/b tests, experimentation, controlled experiments]
-  Airflow: [orchestration, workflow scheduling]
+  TinyML: [edge ai, on-device machine learning, embedded machine learning, edge ml]
+  TensorFlow Lite: [tflite, tensorflow lite micro, tensorflow]
+  NLP: [natural language processing, text mining, text analytics]
+  Statistics: [statistical analysis, stats, hypothesis testing]
+  SQL: [postgres, postgresql, snowflake sql]
+  Snowflake: [data warehouse, snowflake sql]
+  Kafka: [apache kafka, event streaming, streaming]
+  Solar PV: [photovoltaic, photovoltaics, solar energy, pv design]
+  Battery Storage: [bess, energy storage, battery energy storage]
+  NYC Local Law 87: [ll87, local law 87, energy audit compliance]
+  LEED: [green building certification, usgbc]
+  Selenium: [browser automation, web automation]
+  SPSS: [ibm spss]
+  Figma: [ui design, wireframing]
+  Arduino: [microcontroller programming]
